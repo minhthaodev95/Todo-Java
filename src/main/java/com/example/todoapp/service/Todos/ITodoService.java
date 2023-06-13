@@ -1,4 +1,4 @@
-package com.example.todoapp.service;
+package com.example.todoapp.service.Todos;
 
 import java.util.List;
 
