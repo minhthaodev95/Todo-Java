@@ -1,4 +1,4 @@
-package com.example.todoapp.service;
+package com.example.todoapp.service.Todos;
 
 import java.util.List;
 
@@ -39,16 +39,16 @@ public class TodoService implements ITodoService {
 	}
 	
 	@Override
-	public Todo updateTodo(Long todoId, Todo newTodo) 
-	{
-		Todo todo = todoRepository.findById(todoId)
-				.orElseThrow(() -> new ResourceNotFoundException("Todo", "id", todoId));
-		
-		todo.setTitle(newTodo.getTitle());
-		todo.setDescription(newTodo.getDescription());
-		
-		return todoRepository.save(todo);
+	public Todo updateTodo(Long todoId, Todo newTodo) {
+			return todoRepository.findById(todoId)
+							.map(todo -> {
+									todo.setTitle(newTodo.getTitle());
+									todo.setDescription(newTodo.getDescription());
+									return todoRepository.save(todo);
+							})
+							.orElseThrow(() -> new ResourceNotFoundException("Todo", "id", todoId));
 	}
+	
 
 	@Override
 	public ResponseEntity<?> deleteTodo(Long todoId) 
