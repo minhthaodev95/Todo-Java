@@ -1,22 +1,14 @@
 package com.example.todoapp.service.Users;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.example.todoapp.model.User;
 import com.example.todoapp.repository.UserRepository;
 
 @Service
 public class UserService implements IUserService {
-
-    private static final Map<Long, User> usersMap = new HashMap<>();
     @Autowired
     private UserRepository userRepository;
 
