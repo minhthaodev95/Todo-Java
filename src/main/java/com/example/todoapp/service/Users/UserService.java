@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.todoapp.model.User;
@@ -15,39 +17,45 @@ import com.example.todoapp.repository.UserRepository;
 public class UserService implements IUserService {
 
     private static final Map<Long, User> usersMap = new HashMap<>();
-    private static Long userId = 1L;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<User> getAllUsers() {
-        return new ArrayList<>(usersMap.values());
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long userId) {
-        return usersMap.get(userId);
+        return userRepository.findById(userId).orElse(null);
     }
 
     @Override
     public User createUser(User user) {
-        user.setId(userId++);
-        usersMap.put(user.getId(), user);
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
     public User updateUser(Long userId, User user) {
-        User existingUser = usersMap.get(userId);
+        User existingUser = userRepository.findById(userId).orElse(null);
         if (existingUser != null) {
             existingUser.setName(user.getName());
-            // Add more properties as needed
+            userRepository.save(existingUser);
+            
             return existingUser;
         }
         return null;
     }
 
-    @Override
-    public void deleteUser(Long userId) {
-        usersMap.remove(userId);
+   @Override
+   public ResponseEntity<?> deleteUser(Long userId) {
+    User existingUser = userRepository.findById(userId).orElse(null);
+    if (existingUser != null) {
+       userRepository.deleteById(userId);
+       return ResponseEntity.ok("User Deleted Successfully");
     }
+    return ResponseEntity.ok("User Not Found");
+   }
+   
 }
 

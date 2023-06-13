@@ -2,6 +2,8 @@ package com.example.todoapp.service.Users;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.example.todoapp.model.User;
 
 public interface IUserService {
@@ -11,6 +13,6 @@ public interface IUserService {
     public User getUserById(Long userId);
     public User createUser(User user);
     public User updateUser(Long userId, User user);
-    public void deleteUser(Long userId);
+    public ResponseEntity<?> deleteUser(Long userId);
 }
 
